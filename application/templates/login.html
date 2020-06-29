@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div>
+	<form method="post", action="{{ url_for('index') }}">
+		{{ form.hidden_tag() }}
+		<table>
+			<tr>
+				<td>{{ form.username.label }}</td>
+				<td>{{ form.username(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.password.label }}</td>
+				<td>{{ form.password(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.submit }}</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+
+{% endblock %}

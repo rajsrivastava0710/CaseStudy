@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div>
+	<form name="create" method="post", action="">
+		{{ form.hidden_tag() }}
+		<table>
+			<tr>
+				<td>{{ form.patientSSNID.label }}</td>
+				<td>{{ form.patientSSNID(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.patientName.label }}</td>
+				<td>{{ form.patientName(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.patientAge.label }}</td>
+				<td>{{ form.patientAge(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.dateOfAdmission.label }}</td>
+				<td>{{ form.dateOfAdmission(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.typeOfBed.label }}</td>
+				<td>{{ form.typeOfBed }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.address.label }}</td>
+				<td>{{ form.address(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.city.label }}</td>
+				<td>{{ form.city(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.state.label }}</td>
+				<td>{{ form.state(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.submit }}</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div>
+	<table>
+		<thead>
+			<tr>
+				<th>Patient SSN ID</th>
+				<th>Patient Name</th>
+				<th>Age</th>
+				<th>Date of Admission</th>
+				<th>Type of Bed</th>
+				<th>Address</th>
+				<th>City</th>
+				<th>State</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for d in data %}
+			<tr>
+				<td>{{ d['patientSSNID'] }}</td>
+				<td>{{ d['patientName'] }}</td>
+				<td>{{ d['patientAge'] }}</td>
+				<td>{{ d['dateOfAdmission'] }}</td>
+				<td>{{ d['typeOfBed'] }}</td>
+				<td>{{ d['address'] }}</td>
+				<td>{{ d['city'] }}</td>
+				<td>{{ d['state'] }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %} 
