@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div>
+	<form method="post", action="">
+		{{ form.hidden_tag() }}
+		<table>
+			<tr>
+				<td>{{ form.patientSSNID.label }}</td>
+				<td>{{ form.patientSSNID(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.submit }}</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+
+{% endblock %}
