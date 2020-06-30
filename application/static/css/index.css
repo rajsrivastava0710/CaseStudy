@@ -1,0 +1,33 @@
+body{
+	display: flex;
+	flex-direction: column;
+}
+.center{
+	width: 300px;
+	align-self: center;
+}
+#search-label{
+	color: blue !important;
+	font-weight: 600;
+	font-size: 1.6rem;
+}
+#search-input input{
+	box-shadow: 0 0 10px 1px #7982c1;
+    border: 2px solid blueviolet;
+    font-size: 1.3rem;
+}
+#create-form label{
+	font-size: 1.5rem;
+	font-family: cursive;
+	color:#9c5c3f;
+}
+#create-form input,select{
+	width: 350px;
+	font-size: 1.35rem;
+	border:2px solid #8b8bb8;
+	padding: 6px;
+	color:blueviolet;
+}
+#create-form>div{
+	margin: 20px 0;
+}

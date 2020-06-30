@@ -11,7 +11,7 @@ class CreatePatientForm(FlaskForm):
 	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
 	patientName = StringField("Patient Name",validators = [DataRequired()])
 	patientAge = IntegerField("Patient Age",validators = [DataRequired()])
-	dateOfAdmission = DateField("Date of Admission",validators = [DataRequired()])
+	dateOfAdmission = DateField("Date of Admission",validators = [])
 	typeOfBed = SelectField("Type of Bed", choices=["General Ward", "Semi Sharing", "Single Room"],validators = [DataRequired()])
 	address  = StringField("Address",validators = [DataRequired()])
 	state = StringField("State",validators = [DataRequired()])

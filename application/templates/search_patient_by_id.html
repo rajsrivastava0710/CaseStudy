@@ -2,9 +2,8 @@
 
 {% block body %}
 
-<div>
-	<table>
-		<thead>
+	<table class='table table-striped mt-4'>
+		<thead class='thead-dark'>
 			<tr>
 				<th>Patient SSN ID</th>
 				<th>Patient Name</th>
@@ -18,16 +17,15 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>{{ d['patientSSNID'] }}</td>
-				<td>{{ d['patientName'] }}</td>
-				<td>{{ d['patientAge'] }}</td>
-				<td>{{ d['dateOfAdmission'] }}</td>
-				<td>{{ d['typeOfBed'] }}</td>
-				<td>{{ d['address'] }}</td>
-				<td>{{ d['city'] }}</td>
-				<td>{{ d['state'] }}</td>
+				<td>{{ patient['patientSsnId'] }}</td>
+				<td>{{ patient['patientName'] }}</td>
+				<td>{{ patient['age'] }}</td>
+				<td>{{ patient['dateOfAdmission'] }}</td>
+				<td>{{ patient['typeOfBed'] }}</td>
+				<td>{{ patient['address'] }}</td>
+				<td>{{ patient['city'] }}</td>
+				<td>{{ patient['state'] }}</td>
 			</tr>
 		</tbody>
 	</table>
-</div>
 {% endblock %} 

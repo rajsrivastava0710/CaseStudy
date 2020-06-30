@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">FlaskApp</a>
+    <a class="navbar-brand" href="/">App</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,20 +7,28 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/about">Patients</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/blogs">Records</a>
+          <a class="nav-link" href="/blogs">Medicines</a>
         </li>
-      </ul>
-      <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard">Dashboard</a>
+        <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Billing</a>
           </li>
 
-          <li class='nav-item'>
-            <a class="nav-link" href="/logout">Logout</a>
-          </li>
+      </ul>
+      <ul class="navbar-nav">
+          {% if session.logged_in %}
+
+            <li class='nav-item'>
+              <a class="nav-link" href="/search_patient">Search Patient</a>
+            </li>
+
+            <li class='nav-item'>
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+
+          {% else %}
 
           <li class='nav-item'>
             <a class="nav-link" href="/signup">Signup</a>
@@ -29,6 +37,8 @@
           <li class='nav-item'>
             <a class="nav-link" href="/login">Login</a>
           </li>
+
+          {% endif %}
       </ul>
     </div>
 </nav>
