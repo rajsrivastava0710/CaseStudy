@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+
+
+	<form method="post",action="{{ url_for('issue_medicine') }}">
+
+		{{ form.hidden_tag() }}
+
+		<table>
+			<tr>
+				<td>{{ form.medName.label }}</td>
+				<td>{{ form.medName }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.medQuantity.label }}</td>
+				<td>{{ form.medQuantity }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.search }}</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+{% endblock %}
