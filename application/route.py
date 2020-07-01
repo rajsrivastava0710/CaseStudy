@@ -42,25 +42,16 @@ def get_patient():
 		return render_template('get_patient.html',form=form,flag=0)
 
 
-# @app.route('/issue_medicine',methods=["GET", "POST"])
-# def issue_medicine():
-# 	if request.method == 'POST':
-# 		medname=request.form['medName']
+@app.route('/issue_medicine',methods=["GET", "POST"])
+def issue_medicine():
+	form=IssueMedicineForm()
+	if request.method == 'POST':
+		medname=form.medName.data
+		quantity=form.medQuantity.data
 
-# 		# write down here sql query to fetch medcine details named medNme from medicine db
-# 		med = medicine.query.filter_by(medname='medname').first()
-# 		flag={"available":True,"quantity"=1}
+		med = medicine.query.filter_by(medname='medname').first_or_404(description='There is no medcine named {}'.format(medname))
 
-# 		if med is None:
-# 			succes="no data found"
-# 			return render_template('issue_medicine',success=success)
-
-#         else if med is not None and med.quantity!=0:
-#         	rate=med.rate
-# 		#ammount for each medicine ,yet to 
-# 		#here update current petient database with med id and med quantity
-# 		#also update medicine ta
-#     else:
-#         return render_template('entry.html')
-# 	form= IssueMedicineForm()
-# 	return render_template('issue_medicine.html',form=form)
+        return render_template('issue_medicine.html',med=med,quantity=quantity)
+    else    
+		form= IssueMedicineForm()
+		return render_template('issue_medicine.html',form=form)

@@ -4,7 +4,7 @@
 
 
 
-
+<div>
 	<form method="post",action="{{ url_for('issue_medicine') }}">
 
 		{{ form.hidden_tag() }}
@@ -24,5 +24,33 @@
 		</table>
 	</form>
 </div>
+{% if flag==1 && quantity>0 %}
+div>
+	<table>
+		<tr>
+			<th>Medicine</th>
+			<th>Rate</th>
+			<th>Amount</th>
+		</tr>
+            <tr>
+                <td>{{ med.medicineName}}</td>
+                <td>{{ med.rateOfMedicine }}</td>
+                <td>{{ med.rateOfMedicine*quantity }}</td>
+                <td><a href="{{ url_for('issue_medicine') }}">Add Next</a></td>
+            </tr>
+		
+	</table>
 
+	yhan pr medcinepatient aur mediine master ko update krna hai update click krne pr
+<h3><button type="button"><a href="https://www.google.com">UPDATE</a></button></h3>
+</div>
+{% endif %}
+
+{% if quantity==0 %}
+
+<div>
+	<h3>medicine not available</h3>
+</div>
+
+{% endif %}
 {% endblock %}
