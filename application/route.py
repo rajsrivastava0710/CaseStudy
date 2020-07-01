@@ -4,9 +4,13 @@ from application.form import SearchDiagnosticsForm, SearchMedicinesForm, LoginFo
 from application.middlewares import is_logged_in, is_not_logged_in
 from datetime import datetime
 
+#Index Route
+
 @app.route('/')
 def index():
     return render_template('home.html')
+
+# login for Admin
 
 @app.route('/login',methods=['GET','POST'])
 @is_not_logged_in
@@ -14,12 +18,8 @@ def login():
 	if request.method == 'POST':
 		username = request.form['username']
 		password = request.form['password']
-		#cursor
 		curr = mysql.connection.cursor()
-		#get user by username
 		result = curr.execute("SELECT * FROM userstore WHERE login = %s",[username])
-
-		app.logger.info(result)
 
 		if(result>0):
 			data = curr.fetchone()
@@ -30,11 +30,9 @@ def login():
 				flash('Logged in successfully', 'success')
 				return redirect(url_for('index'))
 			else:
-				app.logger.info('password mismatch')
 				flash('Invalid Username/Password','danger')
 			curr.close()
 		else:
-			app.logger.info('password mismatch')
 			flash('Invalid Username/Password','danger')
 
 		return redirect(url_for('login'))	
@@ -42,7 +40,8 @@ def login():
 		form = LoginForm()
 		return render_template('login.html', form = form)
 
-#Logout
+#Logout for admin
+
 @app.route('/logout')
 @is_logged_in
 def logout():
@@ -50,6 +49,9 @@ def logout():
     flash('Logged out successfully !','success')
     return redirect(url_for('login'))
 
+# Patients
+
+#CREATE page
 @app.route('/create_patient', methods = ['GET', 'POST'])
 @is_logged_in
 def create_patient():
@@ -73,15 +75,17 @@ def create_patient():
 		return redirect(url_for('view_patient'))
 	return render_template('create_patient.html', form = form)
 
+#READ Page
+
 @app.route('/view_patient', methods = ['GET', 'POST'])
 @is_logged_in
 def view_patient():
 	cur = mysql.connection.cursor()
 	cur.execute("select * from patients")
 	data=cur.fetchall()
-	app.logger.info(data)
 	return render_template('view_patient.html', data = data)
 
+#DELETE ROUTE
 
 @app.route('/patient/<string:id>/destroy',methods=['GET','POST'])
 @is_logged_in
@@ -100,6 +104,7 @@ def destroy_patient(id):
 			return redirect(url_for('get_delete_patient'))
 	return redirect(url_for('get_delete_patient'))
 
+#DELETE PAGE
 
 @app.route('/delete_patient', methods = ['GET', 'POST'])
 @is_logged_in
@@ -120,6 +125,8 @@ def get_delete_patient():
 	return render_template('delete_patient.html', form = form)
 
 
+# Update Page
+
 @app.route('/update_patient', methods = ['GET', 'POST'])
 @is_logged_in
 def update_patient():
@@ -129,6 +136,8 @@ def update_patient():
 		return redirect(url_for('create_patient_update', dataupdate = data))
 	return render_template('update_patient.html', form = form)
 
+# Update Route
+
 @app.route('/create_patient_update', methods = ['GET', 'POST'])
 @is_logged_in
 def create_patient_update():
@@ -136,7 +145,6 @@ def create_patient_update():
 	cur = mysql.connection.cursor()
 	result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
 	patient = cur.fetchone()
-	app.logger.info(patient)
 	cur.close()
 	form = CreatePatientForm()
 	if request.method == "POST":
@@ -148,19 +156,10 @@ def create_patient_update():
 			typeOfBed = form.typeOfBed.data
 			city = form.city.data
 			state = form.state.data
-			# app.logger.info(request.form)
-			# app.logger.info(form)
-			
-			#create cursor
+
 			curr = mysql.connection.cursor()
-
-		    #Execute
 			curr.execute("UPDATE patients SET patientName=%s, age=%s, address=%s, dateOfAdmission=%s, typeOfBed=%s, city=%s, state=%s WHERE patientSsnId=%s",(patientName,age,address,dateOfAdmission,typeOfBed,city,state,ssnid))
-			#curr.execute("UPDATE patients SET age=%s WHERE patientSsnId=%s",(age,ssnid))
-		    #Commit
 			mysql.connection.commit()
-
-		    #Close Connection
 			curr.close()
 
 			flash('Patient details have been updated!','success')
@@ -185,6 +184,8 @@ def create_patient_update():
 		flash('No such Patient found','danger')
 		return redirect(url_for('update_patient'))
 
+#search
+
 @app.route('/search_patient', methods = ['GET', 'POST'])
 @is_logged_in
 def search_patient():
@@ -195,7 +196,6 @@ def search_patient():
 		result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
 		patient = cur.fetchone()
 		cur.close()
-		app.logger.info(patient)
 		if result>0:
 			flash('Patient found','success')
 			return render_template('search_patient_by_id.html', patient = patient)
@@ -203,6 +203,9 @@ def search_patient():
 			flash('No such user exists!','danger');
 	return render_template('search_patient.html', form = form)
 
+#MEDICINES
+
+#READ Page
 
 @app.route('/medicines/all')
 @is_logged_in
@@ -212,14 +215,7 @@ def all_medicines():
 	medicines = cur.fetchall()
 	return render_template('all_medicines.html',medicines=medicines)
 
-@app.route('/diagnostics/all')
-@is_logged_in
-def all_diagnostics():
-	cur = mysql.connection.cursor()
-	result = cur.execute("select * from diagnosticsmaster")
-	diagnostics = cur.fetchall()
-	return render_template('all_diagnostics.html',diagnostics=diagnostics)
-
+# Search via patient id
 
 @app.route('/patient/medicines',methods=['GET','POST'])
 @is_logged_in
@@ -231,7 +227,6 @@ def get_patient_medicine():
 		result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
 		patient = cur.fetchone()
 		cur.close()
-		app.logger.info(patient)
 		if result>0:
 			return redirect(url_for('medicines_section',id=ssnid))
 			# return render_template('medicines_dashboard.html', patient = patient)
@@ -240,20 +235,22 @@ def get_patient_medicine():
 
 	return render_template('search_patient_medicine.html',form=form)
 
+# pharmacy detail of patient
+
 @app.route('/patient/<string:id>/medicines',methods=['GET','POST'])
 @is_logged_in
 def medicines_section(id):
 	cur = mysql.connection.cursor()
 	result = cur.execute("select * from patients where patientSsnId=%s",[id])
 	patient = cur.fetchone()
-	# app.logger.info(patient)
 	cur.close()
 	curr = mysql.connection.cursor()
 	result = curr.execute("select medicinesmaster.medicineName, medicinesmaster.rateOfMedicine,medicinepatient.quantityIssued from medicinepatient inner join medicinesmaster on medicinepatient.medicineId=medicinesmaster.medicineId where patientId=%s",[id])
 	medicines = curr.fetchall()
-	app.logger.info(medicines)
 	curr.close()
 	return render_template('medicines_dashboard.html',patient=patient,medicines=medicines)
+
+# search for medicine via id
 
 @app.route('/patient/<string:id>/medicines/add',methods=['GET','POST'])
 @is_logged_in
@@ -261,11 +258,9 @@ def add_medicines(id):
 	form = SearchMedicinesForm()
 	if request.method == 'POST':
 		medicineId = form.medicineId.data
-		app.logger.info(medicineId)
 		cur = mysql.connection.cursor()
 		result = cur.execute("select * from medicinesmaster where medicineId=%s",[medicineId])
 		medicine = cur.fetchone()
-		app.logger.info(medicine)
 		cur.close()
 		if result>0 and medicine['quantityAvailable']>0 :
 			flash('Available in stock','success')
@@ -275,6 +270,8 @@ def add_medicines(id):
 			flash('Not Available in Stock','danger')
 		return render_template('add_medicines.html',form=form,medicine = medicine,id=id)
 	return render_template('add_medicines.html',form=form)
+
+# Issue a medicine to patient
 
 @app.route('/addMedicine/<string:mId>/patient/<string:pId>',methods=['POST'])
 @is_logged_in
@@ -300,6 +297,19 @@ def addMedicineToPatient(mId,pId):
 
 	return redirect(url_for('medicines_section',id=pId))
 
+#DIAGNOSTICS
+
+# REad
+
+@app.route('/diagnostics/all')
+@is_logged_in
+def all_diagnostics():
+	cur = mysql.connection.cursor()
+	result = cur.execute("select * from diagnosticsmaster")
+	diagnostics = cur.fetchall()
+	return render_template('all_diagnostics.html',diagnostics=diagnostics)
+
+#search via patient id
 
 @app.route('/patient/diagnostics',methods=['GET','POST'])
 @is_logged_in
@@ -311,7 +321,6 @@ def get_patient_diagnostics():
 		result = cur.execute("select * from patients where patientSsnId=%s",[ssnid])
 		patient = cur.fetchone()
 		cur.close()
-		app.logger.info(patient)
 		if result>0:
 			return redirect(url_for('diagnostics_section',id=ssnid))
 			# return render_template('medicines_dashboard.html', patient = patient)
@@ -320,20 +329,21 @@ def get_patient_diagnostics():
 
 	return render_template('search_patient_diagnostic.html',form=form)
 
+# diagnostic page of patient
+
 @app.route('/patient/<string:id>/diagnostics',methods=['GET','POST'])
 @is_logged_in
 def diagnostics_section(id):
 	cur = mysql.connection.cursor()
 	result = cur.execute("select * from patients where patientSsnId=%s",[id])
 	patient = cur.fetchone()
-	app.logger.info(patient)
 	cur.close()
 	curr = mysql.connection.cursor()
 	result = curr.execute("select diagnosticsmaster.testName, diagnosticsmaster.testCharge from diagnosticpatient inner join diagnosticsmaster on diagnosticpatient.testId=diagnosticsmaster.testId where patientId=%s",[id])
 	diagnostics = curr.fetchall()
-	app.logger.info(diagnostics)
 	return render_template('diagnostics_dashboard.html',patient=patient,diagnostics = diagnostics)
 
+# search test via id
 
 @app.route('/patient/<string:id>/diagnostics/add',methods=['GET','POST'])
 @is_logged_in
@@ -352,6 +362,8 @@ def add_diagnostics(id):
 		return render_template('add_diagnostics.html',form=form,diagnostic = diagnostic,id=id)
 	return render_template('add_diagnostics.html',form=form)
 
+# issue test to patient page
+
 @app.route('/addDiagnostic/<string:dId>/patient/<string:pId>',methods=['POST'])
 @is_logged_in
 def add_diagnostic_to_patient(dId,pId):
@@ -367,6 +379,10 @@ def add_diagnostic_to_patient(dId,pId):
 	flash('Test issued successfully','success')
 
 	return redirect(url_for('diagnostics_section',id=pId))
+
+#BILLING
+
+# billing page and payment confirmation
 
 @app.route('/patient/<string:pId>/billing',methods=['GET','POST'])
 @is_logged_in
@@ -400,7 +416,6 @@ def billing_screen(pId):
 		curr = mysql.connection.cursor()
 		result = curr.execute("select diagnosticsmaster.testName, diagnosticsmaster.testCharge from diagnosticpatient inner join diagnosticsmaster on diagnosticpatient.testId=diagnosticsmaster.testId where patientId=%s",[pId])
 		diagnostics = curr.fetchall()
-		app.logger.info(diagnostics)
 		curr.close()
 
 		curr = mysql.connection.cursor()
@@ -408,7 +423,6 @@ def billing_screen(pId):
 		diagnosticTotal = curr.fetchone()
 		if diagnosticTotal['diagSum'] == None:
 			diagnosticTotal['diagSum'] = 0
-		app.logger.info(diagnosticTotal)
 		curr.close()
 
 		currr = mysql.connection.cursor()
@@ -417,13 +431,11 @@ def billing_screen(pId):
 		if medicineTotal['medSum'] == None:
 			medicineTotal['medSum'] = 0
 
-		app.logger.info(medicineTotal)
 		currr.close()
 
 		currr = mysql.connection.cursor()
 		result = currr.execute("select medicinesmaster.medicineName, medicinesmaster.rateOfMedicine,medicinepatient.quantityIssued from medicinepatient inner join medicinesmaster on medicinepatient.medicineId=medicinesmaster.medicineId where patientId=%s",[pId])
 		medicines = currr.fetchall()
-		app.logger.info(medicines)
 		currr.close()
 		return render_template('billing.html',patient=patient,difference=difference,roomFee=roomFee,medicines = medicines, diagnostics = diagnostics,medicineTotal=medicineTotal['medSum'],diagnosticTotal=diagnosticTotal['diagSum'])
 
