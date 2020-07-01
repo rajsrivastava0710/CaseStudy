@@ -400,7 +400,11 @@ def billing_screen(pId):
 		res = cur.execute("select * from patients where patientSsnId = %s",[pId])
 		patient = cur.fetchone()
 		cur.close()
-		current_time = datetime.now()
+		if patient['dateOfDischarge']:
+			current_time = patient['dateOfDischarge']
+		else:
+			current_time = datetime.now()
+		app.logger.info(current_time)
 		_array = str(current_time - patient['dateOfAdmission']).split(' ')
 		if len(_array)==1 :
 			difference = 1
