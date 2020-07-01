@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div>
+	<form method="post", action="{{ url_for('get_patient') }}">
+		{{ form.hidden_tag() }}
+		<table>
+			<tr>
+				<td>{{ form.patientSSNID.label }}</td>
+				<td>{{ form.patientSSNID(size = 35) }}</td>
+			</tr>
+			<tr>
+				<td>{{ form.submit }}</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+
+
+{% if flag==1 %}
+<div>
+	<table>
+		<tr>
+		    <th>patientId</th>
+		    <th>Name</th>
+		    <th>Age</th>
+		    <th>Address</th>
+		    <th>DOJ</th>
+		    <th>Type Of Room</th>
+		</tr>
+  <tr>
+    <td>{{ patient.patientId }}</td>
+    <td>{{ patient.patientName }}</td>
+    <td>{{ patient.age }}</td>
+    <td><p>{{ patient.address }} </p> <p> {{ patient.city }}</p> <p> {{ patient.state }} </p> </td>l̥
+    <td>patient.dateOfAdmission</td>
+    <td>patient.typeOfBed</td>
+  </tr>
+    </table>
+
+</div>
+
+// medcine issued to given patient
+
+<div>
+	<table>
+		<tr>
+			<th>Medicine</th>
+			<th>Quantity</th>
+			<th>Rate</th>
+			<th>Amount</th>
+		</tr>
+
+		{% for row in records %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[1]*row[2] }}</td>
+            </tr>
+		{% endfor %}
+		
+
+
+	</table>
+
+</div>
+<div>		<button type="button"><a href="https://www.google.com">Issue medicine</a></button>
+</div>
+{% endif %}
+
+{% endblock %}

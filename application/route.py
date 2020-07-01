@@ -1,6 +1,6 @@
 from flask import redirect, url_for, Response, render_template, request, flash
 from application import app
-from application.form import LoginForm, CreatePatientForm,IssueMedicineForm,GetPatientDetails
+from application.form import LoginForm, CreatePatientForm,IssueMedicineForm,GetPatientForm
 
 @app.route('/')
 def index():
@@ -16,10 +16,13 @@ def create_patient():
 	form = CreatePatientForm()
 	return render_template('create_patient.html', form = form)
 
-@app.route('/pharmacist',methods=["GET","POST"])
-def pharmacist():
-	if request.method=='POST':
-		pid=request.form[pid]
+
+@app.route('/get_patient',methods=["GET","POST"])
+def get_patient():
+	flag=1
+	form=GetPatientForm()
+	if request.method=='POST':     
+		pid=form.patientSSNID.data
 
 		patient=patients.query.filter_by(patientId=pid).first_or_404(description='There is no patient having id  {}'.format(pid))
 
@@ -32,10 +35,11 @@ def pharmacist():
 		records = cursor.fetchall()
 
 
-		return render_template('pharmacist.html',patient=patient,records=records)
+		return render_template('get_patient.html',patient=patient,records=records,flag=1)
 
 	else:
-		return render_template('pharmacist.html')
+		form=GetPatientForm()
+		return render_template('get_patient.html',form=form,flag=0)
 
 
 # @app.route('/issue_medicine',methods=["GET", "POST"])

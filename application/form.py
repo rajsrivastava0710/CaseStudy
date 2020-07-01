@@ -18,9 +18,9 @@ class CreatePatientForm(FlaskForm):
 	city = StringField("City",validators = [DataRequired()])
 	submit = SubmitField("Register")
 
-class GetPatientDetails(FlaskForm):
-	patientid=IntegerField("Patient Id",validators=[DataRequired()])
-	search=SubmitField("Search")
+class GetPatientForm(FlaskForm):
+	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
+	submit = SubmitField("Search")
 
 class IssueMedicineForm(FlaskForm):
 	medName=StringField("Medicine Name",validators=[DataRequired()])
