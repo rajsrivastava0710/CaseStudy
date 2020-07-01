@@ -1,9 +1,42 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hospital Management System</title>
 
-{% block body %}
-    
-<div class="jumbotron text-center mt-3">
-    <h1>Welcome to Flask App</h1>
+<!-- bootstrap -->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<link href="create_patients.css" rel="stylesheet">
+<link href="{{ url_for('static',filename='css/home.css') }}" rel="stylesheet">
+  
+
+  </head>
+
+</head>
+
+<body style="background-image: url( {{ url_for('static', filename='images/bg.jpg')  }} );">
+
+
+<div class="">
+    <nav class="navbar navbar-light bg-primary text-white">
+      <h1 class="align-middle">Hospital Management System</h1>
+        
+    </nav>
 </div>
 
-{% endblock %}
+<div class="card text-center">
+  <div class="card-body">
+    <h2 class="card-title">We Care For Your Health</h2>
+    <p class="card-text">Entrust Your Health To Our Doctors.</p>
+    <a href="login" class="btn btn-primary">Login</a>
+  </div>
+</div>
+
+
+
+</body>
+</html>
+
+
+

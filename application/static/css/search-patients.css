@@ -1,0 +1,29 @@
+body{
+  background-color: #435155;
+}
+
+.container{
+  padding: 10% 5%;
+}
+
+
+.card-header{
+background-color: #3274d6;
+}
+
+.mb-0{
+  color: white;
+}
+
+.cancel{
+  padding:5px 12px 10px 14px;
+  background-color: red; 
+  color: white; 
+  border-radius: 5px; 
+  margin: 0 10%;
+}
+
+.btn{
+  background-color: #3274d6;
+  margin-left: 4%;"
+}

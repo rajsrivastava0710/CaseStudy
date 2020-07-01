@@ -1,0 +1,22 @@
+body{
+  background-color: #5b6574;
+  }
+
+     
+.jumbotron{
+  border: 1px solid;
+  margin: 2% 0 2% 0;
+  }
+
+  h1{
+    margin-top: -50px;
+  }
+
+label{
+  
+  font-weight: bold;
+}
+
+textarea{
+  resize: none;
+}

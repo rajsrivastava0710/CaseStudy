@@ -1,0 +1,47 @@
+body{
+  background-image: url("../static/images/bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login{
+  padding:8px 12px 8px 12px ; 
+  background-color: #3274d6; 
+  text-decoration: none; color: white; 
+  border-radius: 4px;"
+}
+
+.card{
+  margin: 15% 35%;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 10px;
+  width: 25rem;
+  height: 15rem;
+}
+
+
+div.card:hover{
+  box-shadow: 0 8px 16px 0 blue;
+}
+
+.card-title{
+  color: green;
+}
+
+
+.align-middle{
+  text-align: left; 
+  padding-left: 20px; 
+  font-size: 60px; 
+  margin-left: 13.5%;
+  }
+
+  .btn{
+    flex-wrap: wrap;
+    align-content: center;
+    margin-top: 15%;
+  }
+
+  a.btn:hover{
+    color: red;
+  }
