@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class='container'>
+	<form method="post", action="" class='container text-center'>
+		{{ form.hidden_tag() }}
+		
+		<div id='search-label' class='m-3'>{{ form.testId.label }}</div>
+		<div id= 'search-input' class='m-3'>{{ form.testId(size = 35) }}</div>
+	
+		<button class='btn btn-primary'>SEARCH</button>
+
+	</form>
+
+	{% if diagnostic %}
+
+		<table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>Test ID</th>
+				<th>Test Name</th>
+				<th>Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class='table-primary'>
+				<td>{{ diagnostic.testId }}</td>
+				<td>{{ diagnostic.testName }}</td>
+				<td>&#8377;{{ diagnostic.testCharge }}</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<form class='text-center mt-4' action='/addDiagnostic/{{diagnostic.testId}}/patient/{{id}}' method='post'>
+			<div>
+			<button class='btn btn-info mt-3'>Issue</button>
+			</div>
+		</form>
+
+	{% endif %}
+</div>
+
+{% endblock %}

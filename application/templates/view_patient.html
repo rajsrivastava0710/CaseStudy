@@ -2,8 +2,9 @@
 
 {% block body %}
 
-<div>
-	<table class='table table-striped mt-4'>
+<div class='container'>
+	<div class='text-center mt-3' style="font-size: 2.2rem;color:#b66041;font-weight: 600;text-decoration: underline;">View Patients</div>
+	<table class='table table-striped mt-4 text-center'>
 		<thead class='thead thead-dark'>
 			<tr>
 				<th>Patient SSN ID</th>
@@ -14,6 +15,7 @@
 				<th>Address</th>
 				<th>City</th>
 				<th>State</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,6 +29,7 @@
 				<td id='address-column'>{{ d.address }}</td>
 				<td>{{ d.city }}</td>
 				<td>{{ d.state }}</td>
+				<td>{{ d.status }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

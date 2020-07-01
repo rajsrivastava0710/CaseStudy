@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class='container'>
+	<div class='m-4 text-center' style='font-size: 2.2rem;font-weight: 600;color:#b66041;text-decoration: underline;'>View Diagnostics</div>
+	<table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for diagnostic in diagnostics %}
+			<tr class='table-info'>
+				<td>{{ diagnostic.testId }}</td>
+				<td>{{ diagnostic.testName }}</td>
+				<td>&#8377;{{ diagnostic.testCharge }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %} 

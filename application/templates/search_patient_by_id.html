@@ -1,8 +1,9 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-
-	<table class='table table-striped mt-4'>
+<div class='container'>
+	<div class='text-center mt-3' style="font-size: 2.2rem;color:#b66041;font-weight: 600;text-decoration: underline;">View Patient</div>
+	<table class='table table-striped mt-4 text-center'>
 		<thead class='thead-dark'>
 			<tr>
 				<th>Patient SSN ID</th>
@@ -13,6 +14,7 @@
 				<th>Address</th>
 				<th>City</th>
 				<th>State</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +27,12 @@
 				<td>{{ patient['address'] }}</td>
 				<td>{{ patient['city'] }}</td>
 				<td>{{ patient['state'] }}</td>
+				<td>{{ patient['status'] }}</td>
 			</tr>
 		</tbody>
 	</table>
+	<div class='text-center'>
+		<a href="{{ url_for('billing_screen',pId=patient['patientSsnId']) }}" class='btn btn-success btn-lg m-4'>Complete Payment</a>
+	</div>
+</div>
 {% endblock %} 
