@@ -31,8 +31,8 @@ class SearchPatientForm(FlaskForm):
 	submit = SubmitField("Search")
 
 class SearchMedicinesForm(FlaskForm):
-	medicineId = IntegerField("Medicine ID",validators = [DataRequired()])
+	medicineName = StringField("Medicine Name",validators = [DataRequired()])
 
 
 class SearchDiagnosticsForm(FlaskForm):
-	testId = IntegerField("Test ID",validators = [DataRequired()])
+	testName = StringField("Test Name",validators = [DataRequired()])

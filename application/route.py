@@ -68,11 +68,20 @@ def create_patient():
 		status = 'Occupied'
 
 		cur = mysql.connection.cursor()
-		cur.execute("INSERT INTO patients(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status))
+		result = cur.execute("SELECT * from patients WHERE patientSsnId = %s",[patientSsnId])
 		mysql.connection.commit()
 		cur.close()
-		flash('Patient created successfully!','success')
-		return redirect(url_for('view_patient'))
+
+		if result == 0 :
+			cur = mysql.connection.cursor()
+			cur.execute("INSERT INTO patients(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status))
+			mysql.connection.commit()
+			cur.close()
+			flash('Patient created successfully!','success')
+			return redirect(url_for('view_patient'))
+		else:
+			flash('Patient with this Id already exists','danger')
+			return redirect(url_for('create_patient'))
 	return render_template('create_patient.html', form = form)
 
 #READ Page
@@ -257,15 +266,15 @@ def medicines_section(id):
 def add_medicines(id):
 	form = SearchMedicinesForm()
 	if request.method == 'POST':
-		medicineId = form.medicineId.data
+		medicineName = form.medicineName.data+'%'
 		cur = mysql.connection.cursor()
-		result = cur.execute("select * from medicinesmaster where medicineId=%s",[medicineId])
+		result = cur.execute("select * from medicinesmaster where LCASE(medicinesmaster.`medicineName`) LIKE %s",[medicineName])
 		medicine = cur.fetchone()
 		cur.close()
 		if result>0 and medicine['quantityAvailable']>0 :
 			flash('Available in stock','success')
 		elif result<=0 :
-			flash('Medicine does not exist with this ID','danger')
+			flash('Medicine does not exist with this name','danger')
 		else:
 			flash('Not Available in Stock','danger')
 		return render_template('add_medicines.html',form=form,medicine = medicine,id=id)
@@ -276,12 +285,20 @@ def add_medicines(id):
 @app.route('/addMedicine/<string:mId>/patient/<string:pId>',methods=['POST'])
 @is_logged_in
 def addMedicineToPatient(mId,pId):
+
 	quantity = int(request.form['quantity'])
+
+	cur = mysql.connection.cursor()
+	res = cur.execute('select * from patients where patientSsnId = %s',[pId])
+	patient = cur.fetchone()
+	cur.close()
+
 	cur = mysql.connection.cursor()
 	res = cur.execute("select * from medicinesmaster where medicineId = %s",[mId])
 	medicine = cur.fetchone()
 	cur.close()
-	if int(medicine['quantityAvailable'])>=int(quantity):
+
+	if int(medicine['quantityAvailable'])>=int(quantity) and patient['status'] != 'Discharged':
 		curr=mysql.connection.cursor()
 		result = curr.execute("update medicinesmaster set quantityAvailable = quantityAvailable - %s where medicineId=%s",(quantity,mId))
 		mysql.connection.commit()
@@ -292,6 +309,10 @@ def addMedicineToPatient(mId,pId):
 		cur.connection.commit();
 		cur.close()
 		flash('Medicine issued successfully','success')
+
+	elif patient['status'] == 'Discharged':
+		flash('Patient already discharged. Can not add medicine!','danger')
+
 	else:
 		flash('Amount Exceeded, Medicine Issue failed!','danger')
 
@@ -350,15 +371,15 @@ def diagnostics_section(id):
 def add_diagnostics(id):
 	form = SearchDiagnosticsForm()
 	if request.method == 'POST':
-		testId = form.testId.data
+		testName = form.testName.data + '%'
 		cur = mysql.connection.cursor()
-		result = cur.execute("select * from diagnosticsmaster where testId=%s",[testId])
+		result = cur.execute("select * from diagnosticsmaster where LCASE(diagnosticsmaster.`testName`) LIKE %s",[testName])
 		diagnostic = cur.fetchone()
 		cur.close()
 		if result>0 :
 			flash('Test Available','success')
 		else :
-			flash('Test does not exist with this ID','danger')
+			flash('Test does not exist with this Name','danger')
 		return render_template('add_diagnostics.html',form=form,diagnostic = diagnostic,id=id)
 	return render_template('add_diagnostics.html',form=form)
 
@@ -367,16 +388,27 @@ def add_diagnostics(id):
 @app.route('/addDiagnostic/<string:dId>/patient/<string:pId>',methods=['POST'])
 @is_logged_in
 def add_diagnostic_to_patient(dId,pId):
+
 	cur = mysql.connection.cursor()
-	res = cur.execute("select * from diagnosticsmaster where testId = %s",[dId])
-	diagnostic = cur.fetchone()
+	res = cur.execute('select * from patients where patientSsnId = %s',[pId])
+	patient = cur.fetchone()
 	cur.close()
 
-	cur =  mysql.connection.cursor()
-	res = cur.execute("insert into diagnosticpatient(patientId,testId) values(%s, %s)",(pId,dId))
-	cur.connection.commit();
-	cur.close()
-	flash('Test issued successfully','success')
+	if patient['status'] == 'Discharged':
+		flash('Patient is already discharged. Could not add the test!','danger')
+
+	else:
+		cur = mysql.connection.cursor()
+		res = cur.execute("select * from diagnosticsmaster where testId = %s",[dId])
+		diagnostic = cur.fetchone()
+		cur.close()
+
+		cur =  mysql.connection.cursor()
+		res = cur.execute("insert into diagnosticpatient(patientId,testId) values(%s, %s)",(pId,dId))
+		cur.connection.commit();
+		cur.close()
+		flash('Test issued successfully','success')
+		
 
 	return redirect(url_for('diagnostics_section',id=pId))
 
