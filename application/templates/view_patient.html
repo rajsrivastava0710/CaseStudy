@@ -7,7 +7,7 @@
 	<table class='table table-striped mt-4 text-center'>
 		<thead class='thead thead-dark'>
 			<tr>
-				<th>Patient SSN ID</th>
+				<th>Patient ID</th>
 				<th>Patient Name</th>
 				<th>Age</th>
 				<th>Date of Admission</th>
@@ -21,7 +21,7 @@
 		<tbody>
 			{% for d in data %}
 			<tr class='table-primary'>
-				<td>{{ d.patientSsnId }}</td>
+				<td>{{ d.patientId }}</td>
 				<td>{{ d.patientName }}</td>
 				<td>{{ d.age }}</td>
 				<td>{{ d.dateOfAdmission }}</td>

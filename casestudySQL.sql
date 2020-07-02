@@ -79,7 +79,8 @@ CREATE TABLE `medicinesmaster` (
 --
 
 CREATE TABLE `patients` (
-  `patientSsnId` int(15) PRIMARY KEY NOT NULL,
+  `patientSsnId` int(9) PRIMARY KEY NOT NULL,
+  `patientId` int(9),
   `patientName` varchar(255) NOT NULL,
   `age` int(15) NOT NULL,
   `dateOfAdmission` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

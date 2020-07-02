@@ -6,7 +6,7 @@
 	<table class='table table-striped mt-4 text-center'>
 		<thead class='thead-dark'>
 			<tr>
-				<th>Patient SSN ID</th>
+				<th>Patient ID</th>
 				<th>Patient Name</th>
 				<th>Age</th>
 				<th>Date of Admission</th>
@@ -19,7 +19,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>{{ patient['patientSsnId'] }}</td>
+				<td>{{ patient['patientId'] }}</td>
 				<td>{{ patient['patientName'] }}</td>
 				<td>{{ patient['age'] }}</td>
 				<td>{{ patient['dateOfAdmission'] }}</td>
@@ -32,7 +32,7 @@
 		</tbody>
 	</table>
 	<div class='text-center'>
-		<a href="{{ url_for('billing_screen',pId=patient['patientSsnId']) }}" class='btn btn-success btn-lg m-4'>Complete Payment</a>
+		<a href="{{ url_for('billing_screen',pId=patient['patientId']) }}" class='btn btn-success btn-lg m-4'>Complete Payment</a>
 	</div>
 </div>
 {% endblock %} 

@@ -8,7 +8,7 @@ from datetime import datetime
 
 @app.route('/')
 def index():
-    return render_template('home.html')
+	return render_template('home.html')
 
 # login for Admin
 
@@ -56,7 +56,6 @@ def logout():
 @is_logged_in
 def create_patient():
 	form = CreatePatientForm()
-	
 	if request.method == 'POST':
 		patientSsnId = form.patientSSNID.data
 		patientName = form.patientName.data
@@ -74,11 +73,14 @@ def create_patient():
 			return redirect(url_for('create_patient'))
 
 		cur = mysql.connection.cursor()
-		res = cur.execute("SELECT MAX(`patientSsnId`) as maxId from patients")
-		max = cur.fetchone()
-		maxId = int(max['maxId'])
-		app.logger.info(maxId)
+		res = cur.execute("SELECT MAX(`patientId`) as maxId from patients")
+		maxi = cur.fetchone()
+		maxId = (maxi['maxId'])
 		cur.close()
+		if maxId:
+			maxId= int(maxId)+1
+		else:
+			maxId = 100000001
 
 		cur = mysql.connection.cursor()
 		result = cur.execute("SELECT * from patients WHERE patientSsnId = %s",[patientSsnId])
@@ -86,7 +88,7 @@ def create_patient():
 
 		if result == 0 :
 			cur = mysql.connection.cursor()
-			cur.execute("INSERT INTO patients(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",(patientSsnId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status))
+			cur.execute("INSERT INTO patients(patientSsnId,patientId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(patientSsnId,maxId,patientName,age,dateOfAdmission,address,state,city,typeOfBed,status))
 			mysql.connection.commit()
 			cur.close()
 			flash('Patient created successfully!','success')
@@ -106,24 +108,6 @@ def view_patient():
 	data=cur.fetchall()
 	return render_template('view_patient.html', data = data)
 
-#DELETE ROUTE
-
-@app.route('/patient/<string:id>/destroy',methods=['GET','POST'])
-@is_logged_in
-def destroy_patient(id):
-	if request.method == 'POST':
-		data = id
-		cur = mysql.connection.cursor()
-		result = cur.execute("delete from patients where patientSsnId=%s",[data])
-		mysql.connection.commit()
-		cur.close()
-		if(result > 0):
-			flash('Patient deleted successfully!','success')
-			return redirect(url_for('view_patient'))
-		else:
-			flash('User does not exist','danger')
-			return redirect(url_for('get_delete_patient'))
-	return redirect(url_for('get_delete_patient'))
 
 #DELETE PAGE
 
@@ -132,9 +116,9 @@ def destroy_patient(id):
 def get_delete_patient():
 	form = DeletePatientForm()
 	if request.method == 'POST':
-		data = form.patientSSNID.data
+		data = form.patientID.data
 		cur = mysql.connection.cursor()
-		result = cur.execute("select * from patients where patientSsnId=%s",[data])
+		result = cur.execute("select * from patients where patientId=%s",[data])
 		patient = cur.fetchone()
 		cur.close()
 		if(result > 0):
@@ -145,6 +129,24 @@ def get_delete_patient():
 			return redirect(url_for('get_delete_patient'))
 	return render_template('delete_patient.html', form = form)
 
+#DELETE ROUTE
+
+@app.route('/patient/<string:id>/destroy',methods=['GET','POST'])
+@is_logged_in
+def destroy_patient(id):
+	if request.method == 'POST':
+		data = id
+		cur = mysql.connection.cursor()
+		result = cur.execute("delete from patients where patientId=%s",[data])
+		mysql.connection.commit()
+		cur.close()
+		if(result > 0):
+			flash('Patient deleted successfully!','success')
+			return redirect(url_for('view_patient'))
+		else:
+			flash('User does not exist','danger')
+			return redirect(url_for('get_delete_patient'))
+	return redirect(url_for('get_delete_patient'))
 
 # Update Page
 
@@ -153,7 +155,7 @@ def get_delete_patient():
 def update_patient():
 	form = UpdatePatientForm()
 	if request.method == 'POST':
-		data = form.patientSSNID.data
+		data = form.patientID.data
 		return redirect(url_for('create_patient_update', dataupdate = data))
 	return render_template('update_patient.html', form = form)
 
@@ -162,9 +164,9 @@ def update_patient():
 @app.route('/create_patient_update', methods = ['GET', 'POST'])
 @is_logged_in
 def create_patient_update():
-	ssnid = request.args.get('dataupdate')
+	_id = request.args.get('dataupdate')
 	cur = mysql.connection.cursor()
-	result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
+	result = cur.execute("select *from patients where patientId=%s",[_id])
 	patient = cur.fetchone()
 	cur.close()
 	form = CreatePatientForm()
@@ -179,7 +181,7 @@ def create_patient_update():
 			state = form.state.data
 
 			curr = mysql.connection.cursor()
-			curr.execute("UPDATE patients SET patientName=%s, age=%s, address=%s, dateOfAdmission=%s, typeOfBed=%s, city=%s, state=%s WHERE patientSsnId=%s",(patientName,age,address,dateOfAdmission,typeOfBed,city,state,ssnid))
+			curr.execute("UPDATE patients SET patientName=%s, age=%s, address=%s, dateOfAdmission=%s, typeOfBed=%s, city=%s, state=%s WHERE patientId=%s",(patientName,age,address,dateOfAdmission,typeOfBed,city,state,_id))
 			mysql.connection.commit()
 			curr.close()
 
@@ -192,7 +194,6 @@ def create_patient_update():
 			return redirect(url_for('update_patient'))
 
 	if result>0:
-		form.patientSSNID.data = patient['patientSsnId']
 		form.patientName.data = patient['patientName']
 		form.patientAge.data = patient['age']
 		form.address.data = patient['address']
@@ -200,7 +201,7 @@ def create_patient_update():
 		form.typeOfBed.data = patient['typeOfBed']
 		form.city.data = patient['city']
 		form.state.data = patient['state']
-		return render_template('update_patient_by_id.html', form = form)
+		return render_template('update_patient_by_id.html', form = form,_id=_id)
 	else:
 		flash('No such Patient found','danger')
 		return redirect(url_for('update_patient'))
@@ -212,9 +213,9 @@ def create_patient_update():
 def search_patient():
 	form = SearchPatientForm()
 	if request.method == 'POST':
-		ssnid = form.patientSSNID.data
+		_id = form.patientID.data
 		cur = mysql.connection.cursor()
-		result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
+		result = cur.execute("select *from patients where patientId=%s",[_id])
 		patient = cur.fetchone()
 		cur.close()
 		if result>0:
@@ -243,13 +244,13 @@ def all_medicines():
 def get_patient_medicine():
 	form = SearchPatientForm()
 	if request.method == 'POST':
-		ssnid = form.patientSSNID.data
+		_id = form.patientID.data
 		cur = mysql.connection.cursor()
-		result = cur.execute("select *from patients where patientSsnId=%s",[ssnid])
+		result = cur.execute("select *from patients where patientId=%s",[_id])
 		patient = cur.fetchone()
 		cur.close()
 		if result>0:
-			return redirect(url_for('medicines_section',id=ssnid))
+			return redirect(url_for('medicines_section',id=_id))
 			# return render_template('medicines_dashboard.html', patient = patient)
 		else:
 			flash('No such user exists!','danger');
@@ -262,7 +263,7 @@ def get_patient_medicine():
 @is_logged_in
 def medicines_section(id):
 	cur = mysql.connection.cursor()
-	result = cur.execute("select * from patients where patientSsnId=%s",[id])
+	result = cur.execute("select * from patients where patientId=%s",[id])
 	patient = cur.fetchone()
 	cur.close()
 	curr = mysql.connection.cursor()
@@ -301,7 +302,7 @@ def addMedicineToPatient(mId,pId):
 	quantity = int(request.form['quantity'])
 
 	cur = mysql.connection.cursor()
-	res = cur.execute('select * from patients where patientSsnId = %s',[pId])
+	res = cur.execute('select * from patients where patientId = %s',[pId])
 	patient = cur.fetchone()
 	cur.close()
 
@@ -349,13 +350,13 @@ def all_diagnostics():
 def get_patient_diagnostics():
 	form = SearchPatientForm()
 	if request.method == 'POST':
-		ssnid = form.patientSSNID.data
+		_id = form.patientID.data
 		cur = mysql.connection.cursor()
-		result = cur.execute("select * from patients where patientSsnId=%s",[ssnid])
+		result = cur.execute("select * from patients where patientId=%s",[_id])
 		patient = cur.fetchone()
 		cur.close()
 		if result>0:
-			return redirect(url_for('diagnostics_section',id=ssnid))
+			return redirect(url_for('diagnostics_section',id=_id))
 			# return render_template('medicines_dashboard.html', patient = patient)
 		else:
 			flash('No such user exists!','danger');
@@ -368,7 +369,7 @@ def get_patient_diagnostics():
 @is_logged_in
 def diagnostics_section(id):
 	cur = mysql.connection.cursor()
-	result = cur.execute("select * from patients where patientSsnId=%s",[id])
+	result = cur.execute("select * from patients where patientId=%s",[id])
 	patient = cur.fetchone()
 	cur.close()
 	curr = mysql.connection.cursor()
@@ -402,7 +403,7 @@ def add_diagnostics(id):
 def add_diagnostic_to_patient(dId,pId):
 
 	cur = mysql.connection.cursor()
-	res = cur.execute('select * from patients where patientSsnId = %s',[pId])
+	res = cur.execute('select * from patients where patientId = %s',[pId])
 	patient = cur.fetchone()
 	cur.close()
 
@@ -434,14 +435,14 @@ def billing_screen(pId):
 	if request.method == 'POST':
 		doj = datetime.now()
 		cur =mysql.connection.cursor()
-		result = cur.execute('update patients set status = %s, dateOfDischarge = %s where patientSsnId = %s',('Discharged',doj,pId))
+		result = cur.execute('update patients set status = %s, dateOfDischarge = %s where patientId = %s',('Discharged',doj,pId))
 		mysql.connection.commit()
 		cur.close()
 		flash('Billing Confirmation done','success')
 		return redirect(url_for('billing_screen',pId=pId))
 	else:	
 		cur = mysql.connection.cursor()
-		res = cur.execute("select * from patients where patientSsnId = %s",[pId])
+		res = cur.execute("select * from patients where patientId = %s",[pId])
 		patient = cur.fetchone()
 		cur.close()
 		if patient['dateOfDischarge']:

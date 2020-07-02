@@ -19,15 +19,15 @@ class CreatePatientForm(FlaskForm):
 	submit = SubmitField("Register")
 
 class UpdatePatientForm(FlaskForm):
-	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
+	patientID = IntegerField("Patient ID",validators = [DataRequired()])
 	submit = SubmitField("Get")
 
 class DeletePatientForm(FlaskForm):
-	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
+	patientID = IntegerField("Patient ID",validators = [DataRequired()])
 	submit = SubmitField("Delete")
 
 class SearchPatientForm(FlaskForm):
-	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
+	patientID = IntegerField("Patient ID",validators = [DataRequired()])
 	submit = SubmitField("Search")
 
 class SearchMedicinesForm(FlaskForm):

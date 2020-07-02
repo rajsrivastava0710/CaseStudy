@@ -7,7 +7,7 @@
     <table class='table table-striped mt-4 text-center'>
 		<thead class='thead thead-dark'>
 			<tr>
-				<th>Patient SSN ID</th>
+				<th>Patient ID</th>
 				<th>Patient Name</th>
 				<th>Age</th>
 				<th>Date of Admission</th>
@@ -19,7 +19,7 @@
 		</thead>
 		<tbody>
 			<tr class='table-primary'>
-				<td>{{ patient.patientSsnId }}</td>
+				<td>{{ patient.patientId }}</td>
 				<td>{{ patient.patientName }}</td>
 				<td>{{ patient.age }}</td>
 				<td>{{ patient.dateOfAdmission }}</td>
@@ -53,7 +53,7 @@
 		</tbody>
 	</table>
 	<div class='mb-5 mt-5'>
-		<a href='/patient/{{patient.patientSsnId}}/medicines/add' class='btn btn-danger btn-lg'>Issue a Medicine</a>
+		<a href='/patient/{{patient.patientId}}/medicines/add' class='btn btn-danger btn-lg'>Issue a Medicine</a>
 	</div>
 
 </div>
