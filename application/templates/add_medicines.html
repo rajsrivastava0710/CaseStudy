@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class='container'>
+	<form method="post", action="" class='container text-center'>
+		{{ form.hidden_tag() }}
+		
+		<div id='search-label' class='m-3'>{{ form.medicineName.label }}</div>
+		<div id= 'search-input' class='m-3'>{{ form.medicineName(size = 35) }}</div>
+	
+		<button class='btn btn-primary'>SEARCH</button>
+
+	</form>
+
+	{% if medicine %}
+
+		<table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>Medicine ID</th>
+				<th>Medicine Name</th>
+				<th>Quantity Available</th>
+				<th>Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class='table-primary'>
+				<td>{{ medicine.medicineId }}</td>
+				<td>{{ medicine.medicineName }}</td>
+				<td>{{ medicine.quantityAvailable }}</td>
+				<td>&#8377;{{ medicine.rateOfMedicine }}</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<form class='text-center mt-4' action='/addMedicine/{{medicine.medicineId}}/patient/{{id}}' method='post'>
+			<label style='font-weight: 600;color:blue;font-size:1.4rem;'>Select the quantity</label>
+			<div> 
+			<input type='number' name='quantity'/>
+			</div>
+			<div>
+			<button class='btn btn-info mt-3'>Issue</button>
+			</div>
+		</form>
+
+	{% endif %}
+</div>
+
+{% endblock %}

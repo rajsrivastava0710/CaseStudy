@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class='container'>
+	<div class='m-4 text-center' style='font-size: 2.2rem;font-weight: 600;color:#b66041;text-decoration: underline;'>View Medicines</div>
+	<table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Quantity Available</th>
+				<th>Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for medicine in medicines %}
+			<tr class='table-success'>
+				<td>{{ medicine.medicineId }}</td>
+				<td>{{ medicine.medicineName }}</td>
+				<td>{{ medicine.quantityAvailable }}</td>
+				<td>&#8377;{{ medicine.rateOfMedicine }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %} 

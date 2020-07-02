@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    
+<div class="container text-center mt-3">
+	<div class='text-center mt-3' style="font-size: 2.25rem;color:#b66041;font-weight: 600;text-decoration: underline;">Pharamcy</div>
+    <table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>Patient ID</th>
+				<th>Patient Name</th>
+				<th>Age</th>
+				<th>Date of Admission</th>
+				<th>Type of Bed</th>
+				<th>Address</th>
+				<th>City</th>
+				<th>State</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class='table-primary'>
+				<td>{{ patient.patientId }}</td>
+				<td>{{ patient.patientName }}</td>
+				<td>{{ patient.age }}</td>
+				<td>{{ patient.dateOfAdmission }}</td>
+				<td>{{ patient.typeOfBed }}</td>
+				<td>{{ patient.address }}</td>
+				<td>{{ patient.city }}</td>
+				<td>{{ patient.state }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class='text-center m-4' style='font-size: 1.8rem;font-weight: 600;color:blueviolet'>Medicines Issued</div>
+	 
+	<table class='table table-striped mt-4 table-bordered text-center'>
+		<thead class='thead thead-light'>
+			<tr>
+				<th>Medicine</th>
+				<th>Quantity</th>
+				<th>Rate</th>
+				<th>Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for medicine in medicines %}
+			<tr class='table-primary'>
+				<td>{{ medicine.medicineName }}</td>
+				<td>{{ medicine.quantityIssued }}</td>
+				<td>&#8377;{{ medicine.rateOfMedicine }}</td>
+				<td>&#8377;{{ medicine.quantityIssued * medicine.rateOfMedicine }}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class='mb-5 mt-5'>
+		<a href='/patient/{{patient.patientId}}/medicines/add' class='btn btn-danger btn-lg'>Issue a Medicine</a>
+	</div>
+
+</div>
+
+{% endblock %}

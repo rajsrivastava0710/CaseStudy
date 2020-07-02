@@ -1,0 +1,70 @@
+@media only screen and (max-width: 992px){
+	#logout{
+		text-align: center;
+	}
+}
+
+body{
+	display: flex;
+	flex-direction: column;
+	background: #f3eae5;
+	/*background: url('https://previews.123rf.com/images/aurielaki/aurielaki1806/aurielaki180600006/103937252-treatment-clinic-assistance-on-medicine-services-patient-concept-and-clinic-diagnosis-patient-assist.jpg');*/
+}
+.center{
+	width: 300px;
+	align-self: center;
+}
+#search-label{
+	color: blue !important;
+	font-weight: 600;
+	font-size: 1.6rem;
+}
+#search-input input{
+	box-shadow: 0 0 10px 1px #7982c1;
+    border: 2px solid blueviolet;
+    font-size: 1.3rem;
+}
+#create-form label{
+	font-size: 1.5rem;
+	font-family: cursive;
+	color:#9c5c3f;
+}
+#create-form input,select,textarea{
+	width: 350px;
+	font-size: 1.35rem;
+	border:2px solid #8b8bb8;
+	padding: 6px;
+	color:blueviolet;
+}
+#create-form>div{
+	margin: 20px 0;
+}
+.login-label label{
+	font-size: 2.4rem;
+    color: crimson;
+    font-family: monospace;
+}
+.login-input input{
+	outline: none;
+    border: 2px solid #575767;
+    font-size: 1.1rem;
+    padding: 6px;
+}
+.login-input input:focus{
+	border: 2px solid blue;
+	box-shadow: 0 0 17px 2px #eab180;
+}
+.center-dropdown{
+	/*display: flex;*/
+}
+.center-dropdown li{
+	margin: 10px;
+}
+hr{
+	border: 2px solid #502727;
+    border-radius: 25%;
+    margin: 15px 0;
+}
+input{
+	padding: 6px;
+}

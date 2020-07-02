@@ -7,13 +7,9 @@
 	<div class='text-primary text-center font-weight-bold m-4' 
 	style='font-style: oblique;
     font-size: 2.3rem;
-    text-decoration: underline;'>Create a new Patient</div>
-	<form class='container text-center' id='create-form' name="create" method="post", action="/create_patient">
+    text-decoration: underline;'>Update the Patients's Data with ID {{ _id }} </div>
+	<form class='container text-center' id='create-form' name="create" method="post", action="">
 		{{ form.hidden_tag() }}
-			<div>
-				<div>{{ form.patientSSNID.label }}</div>
-				<div>{{ form.patientSSNID(size = 35, type='number')}}</div>
-			</div>
 			<div>
 				<div>{{ form.patientName.label }}</div>
 				<div>{{ form.patientName(size = 35) }}</div>
@@ -43,10 +39,10 @@
 				<div>{{ form.state(size = 35) }}</div>
 			</div>
 			<div>
-				<button class='btn btn-outline-success btn-lg'>CREATE</button>
-				<a class='btn btn-outline-info btn-lg' href='/create_patient'>RESET</a>
+				<button class='btn btn-outline-success btn-lg'>UPDATE</button>
 			</div>
 	</form>
 </div>
+
 
 {% endblock %}
