@@ -71,6 +71,10 @@ def create_patient():
 			flash('Patient creation failed!! Name can only only contain Alphabets!','danger')
 			return redirect(url_for('create_patient'))
 
+		if str(age).isalpha() or age/999>1:
+			flash('Patient creation failed!! Invalid Age!','danger')
+			return redirect(url_for('create_patient'))
+
 		check = patientSsnId / 100000000
 		if check <= 1:
 			flash('SSN ID must be of 9 digits','danger')
@@ -183,6 +187,14 @@ def create_patient_update():
 			typeOfBed = form.typeOfBed.data
 			city = form.city.data
 			state = form.state.data
+
+			if not patientName.isalpha():
+				flash('Patient Updation failed!! Name can only only contain Alphabets!','danger')
+				return redirect(url_for('create_patient_update',dataupdate = _id))
+
+			if str(age).isalpha() or age/999>1:
+				flash('Patient updation failed!! Invalid Age!','danger')
+				return redirect(url_for('create_patient_update', dataupdate = _id))
 
 			curr = mysql.connection.cursor()
 			curr.execute("UPDATE patients SET patientName=%s, age=%s, address=%s, dateOfAdmission=%s, typeOfBed=%s, city=%s, state=%s WHERE patientId=%s",(patientName,age,address,dateOfAdmission,typeOfBed,city,state,_id))
