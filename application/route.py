@@ -67,6 +67,10 @@ def create_patient():
 		typeOfBed = form.typeOfBed.data
 		status = 'Occupied'
 
+		if not patientName.isalpha():
+			flash('Patient creation failed!! Name can only only contain Alphabets!','danger')
+			return redirect(url_for('create_patient'))
+
 		check = patientSsnId / 100000000
 		if check <= 1:
 			flash('SSN ID must be of 9 digits','danger')
