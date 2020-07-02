@@ -12,7 +12,7 @@
 		{{ form.hidden_tag() }}
 			<div>
 				<div>{{ form.patientSSNID.label }}</div>
-				<div>{{ form.patientSSNID(size = 35) }}</div>
+				<div>{{ form.patientSSNID(size = 35, type='number')}}</div>
 			</div>
 			<div>
 				<div>{{ form.patientName.label }}</div>
@@ -20,7 +20,7 @@
 			</div>
 			<div>
 				<div>{{ form.patientAge.label }}</div>
-				<div>{{ form.patientAge(size = 35) }}</div>
+				<div>{{ form.patientAge(size = 35, type='number') }}</div>
 			</div>
 			<div>
 				<div>{{ form.dateOfAdmission.label }}</div>

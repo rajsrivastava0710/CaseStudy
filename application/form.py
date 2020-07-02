@@ -3,12 +3,12 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 
 class LoginForm(FlaskForm):
-	username = StringField("Email", validators = [DataRequired()])
+	username = StringField("Email", validators=[DataRequired(),Length(min=5)])
 	password = PasswordField("Password", validators = [DataRequired()])
 	submit = SubmitField("Login")
 
 class CreatePatientForm(FlaskForm):
-	patientSSNID = IntegerField("Patient SSN ID",validators = [DataRequired()])
+	patientSSNID = IntegerField("Patient SSN ID",validators = [Length(min=9),DataRequired()])
 	patientName = StringField("Patient Name",validators = [DataRequired()])
 	patientAge = IntegerField("Patient Age",validators = [DataRequired()])
 	dateOfAdmission = DateField("Date of Admission",validators = [])

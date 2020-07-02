@@ -67,6 +67,11 @@ def create_patient():
 		typeOfBed = form.typeOfBed.data
 		status = 'Occupied'
 
+		check = patientSsnId / 100000000
+		if check <= 1:
+			flash('SSN ID must be of 9 digits','danger')
+			return redirect(url_for('create_patient'))
+
 		cur = mysql.connection.cursor()
 		result = cur.execute("SELECT * from patients WHERE patientSsnId = %s",[patientSsnId])
 		mysql.connection.commit()
