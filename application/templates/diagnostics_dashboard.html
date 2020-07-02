@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    
+<div class="container text-center mt-3">
+	<div class='text-center mt-3' style="font-size: 2.25rem;color:#b66041;font-weight: 600;text-decoration: underline;">Diagnostics</div>
+    <table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
+			<tr>
+				<th>Patient SSN ID</th>
+				<th>Patient Name</th>
+				<th>Age</th>
+				<th>Date of Admission</th>
+				<th>Type of Bed</th>
+				<th>Address</th>
+				<th>City</th>
+				<th>State</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class='table-primary'>
+				<td>{{ patient.patientSsnId }}</td>
+				<td>{{ patient.patientName }}</td>
+				<td>{{ patient.age }}</td>
+				<td>{{ patient.dateOfAdmission }}</td>
+				<td>{{ patient.typeOfBed }}</td>
+				<td>{{ patient.address }}</td>
+				<td>{{ patient.city }}</td>
+				<td>{{ patient.state }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class='text-center m-4' style='font-size: 1.8rem;font-weight: 600;color:blueviolet'>Tests Issued</div>
+	<table class='table table-striped mt-4 table-bordered text-center'>
+		<thead class='thead thead-light'>
+			<tr style='font-size: 1.3rem;'>
+				<th style='width: 50%;'>Test Name</th>
+				<th>Rate</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for diagnostic in diagnostics %}
+					<tr style='font-size:1.15rem;' class='table-primary'>
+						<td>{{ diagnostic.testName }}</td>
+						<td>&#8377;{{ diagnostic.testCharge }}</td>
+					</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class='mt-5 mb-5'>
+		<a href='/patient/{{patient.patientSsnId}}/diagnostics/add' class='btn btn-warning btn-lg'>Issue a Test</a>
+	</div>
+</div>
+
+{% endblock %}

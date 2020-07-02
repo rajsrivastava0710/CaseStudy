@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class='container'>
+	<form method="post", action="" class='container text-center' novalidate>
+		{{ form.hidden_tag() }}
+		
+		<div id='search-label' class='m-3'>{{ form.patientSSNID.label }}</div>
+		<div id= 'search-input' class='m-3'>{{ form.patientSSNID(size = 35) }}</div>
+		<div>
+					{% for error in form.patientSSNID.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+	
+		<button class='btn btn-primary'>Find Diagnostic Details</button>
+
+	</form>
+</div>
+
+{% endblock %}

@@ -2,19 +2,20 @@
 
 {% block body %}
 
-<div>
-	<form method="post", action="">
+<div class='container'>
+	<form method="post", action="" class='container text-center' novalidate>
 		{{ form.hidden_tag() }}
-		<table>
-			<tr>
-				<td>{{ form.patientSSNID.label }}</td>
-				<td>{{ form.patientSSNID(size = 35) }}</td>
-			</tr>
-			<tr>
-				<td>{{ form.submit }}</td>
-			</tr>
+		
+		<div id='search-label' class='m-3'>{{ form.patientSSNID.label }}</div>
+		<div id= 'search-input' class='m-3'>{{ form.patientSSNID(size = 35) }}</div>
+		<div>
+					{% for error in form.patientSSNID.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+	
+		<button class='btn btn-info'>GET</button>
 
-		</table>
 	</form>
 </div>
 

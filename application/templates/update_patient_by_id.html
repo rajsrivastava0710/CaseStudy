@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/patientsPage.css') }}">
+{% block body %}
+
+
+<div class='container'>
+	<div class='text-primary text-center font-weight-bold m-4' 
+	style='font-style: oblique;
+    font-size: 2.3rem;
+    text-decoration: underline;'>Update the Patients's Data with SSNID {{form.patientSSNID.data }} </div>
+	<form class='container text-center' id='create-form' name="create" method="post", action="" novalidate>
+		{{ form.hidden_tag() }}
+			<div>
+				<div>{{ form.patientName.label }}</div>
+				<div>{{ form.patientName(size = 35) }}</div>
+				<div>
+					{% for error in form.patientName.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.patientAge.label }}</div>
+				<div>{{ form.patientAge(size = 35) }}</div>
+				<div>
+					{% for error in form.patientAge.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.dateOfAdmission.label }}</div>
+				<div>{{ form.dateOfAdmission(size = 35 , type='date') }}</div>
+				<div>
+					{% for error in form.dateOfAdmission.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.typeOfBed.label }}</div>
+				<div>{{ form.typeOfBed }}</div>
+				<div>
+					{% for error in form.typOfBed.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.address.label }}</div>
+				<div>{{ form.address(size = 35) }}</div>
+				<div>
+					{% for error in form.address.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.city.label }}</div>
+				<div>{{ form.city(size = 35) }}</div>
+				<div>
+					{% for error in form.city.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<div>{{ form.state.label }}</div>
+				<div>{{ form.state(size = 35) }}</div>
+				<div>
+					{% for error in form.state.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+				</div>
+			</div>
+			<div>
+				<button class='btn btn-outline-success btn-lg'>UPDATE</button>
+			</div>
+	</form>
+</div>
+
+{% endblock %}

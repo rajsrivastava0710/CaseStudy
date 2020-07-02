@@ -1,0 +1,7 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="center alert alert-{{ category }} mt-3 text-center d-inline-block" style='position: absolute !important; top: 65px !important;right:10px !important;'>{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}

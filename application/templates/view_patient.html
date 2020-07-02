@@ -2,9 +2,10 @@
 
 {% block body %}
 
-<div>
-	<table>
-		<thead>
+<div class='container'>
+	<div class='text-center mt-3' style="font-size: 2.2rem;color:#b66041;font-weight: 600;text-decoration: underline;">View Patients</div>
+	<table class='table table-striped mt-4 text-center'>
+		<thead class='thead thead-dark'>
 			<tr>
 				<th>Patient SSN ID</th>
 				<th>Patient Name</th>
@@ -14,19 +15,21 @@
 				<th>Address</th>
 				<th>City</th>
 				<th>State</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for d in data %}
-			<tr>
-				<td>{{ d['patientSSNID'] }}</td>
-				<td>{{ d['patientName'] }}</td>
-				<td>{{ d['patientAge'] }}</td>
-				<td>{{ d['dateOfAdmission'] }}</td>
-				<td>{{ d['typeOfBed'] }}</td>
-				<td>{{ d['address'] }}</td>
-				<td>{{ d['city'] }}</td>
-				<td>{{ d['state'] }}</td>
+			<tr class='table-primary'>
+				<td>{{ d.patientSsnId }}</td>
+				<td>{{ d.patientName }}</td>
+				<td>{{ d.age }}</td>
+				<td>{{ d.dateOfAdmission }}</td>
+				<td>{{ d.typeOfBed }}</td>
+				<td id='address-column'>{{ d.address }}</td>
+				<td>{{ d.city }}</td>
+				<td>{{ d.state }}</td>
+				<td>{{ d.status }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>

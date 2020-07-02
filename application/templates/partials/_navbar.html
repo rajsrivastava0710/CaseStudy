@@ -1,34 +1,72 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">FlaskApp</a>
+    <a class="navbar-brand" href="/" 
+    style='font-weight: 600;
+          font-size: 1.6rem;
+          color: white;'>KNIT-HMS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
+      <ul class="navbar-nav center-dropdown m-auto">
+
+        <li class="btn-group">
+          <button type="button btn-lg" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Patients
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/create_patient">Create Patient</a>
+            <a class="dropdown-item" href="/update_patient">Update Patient</a>
+            <a class="dropdown-item" href="/delete_patient">Delete Patient</a>
+            <a class="dropdown-item" href="/view_patient">View All Patients</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/search_patient">Search Patient</a>
+          </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs">Records</a>
+
+        <li class="btn-group">
+          <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Medicines
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/patient/medicines">Search for Medicines</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/medicines/all">All Medicines</a>
+          </div>
         </li>
+
+        <li class="btn-group">
+          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Diagnostics
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/patient/diagnostics">Search for Diagnostics</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/diagnostics/all">All Diagnostics</a>
+          </div>
+        </li>
+
       </ul>
       <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard">Dashboard</a>
-          </li>
+          {% if session.logged_in %}
+
+            <li class='nav-item'>
+              <a class="nav-link" id='logout' href="/logout" 
+              style='font-weight: 600;
+                    font-size: 1.6rem;
+                    color: white;'
+              >Logout</a>
+            </li>
+
+          {% else %}
 
           <li class='nav-item'>
-            <a class="nav-link" href="/logout">Logout</a>
+            <a style='font-weight: 600;
+                    font-size: 1.6rem;
+                    color: white;' class="nav-link" href="/login">Login</a>
           </li>
 
-          <li class='nav-item'>
-            <a class="nav-link" href="/signup">Signup</a>
-          </li>
-
-          <li class='nav-item'>
-            <a class="nav-link" href="/login">Login</a>
-          </li>
+          {% endif %}
       </ul>
     </div>
 </nav>
