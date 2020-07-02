@@ -56,6 +56,7 @@ def logout():
 @is_logged_in
 def create_patient():
 	form = CreatePatientForm()
+	
 	if request.method == 'POST':
 		patientSsnId = form.patientSSNID.data
 		patientName = form.patientName.data
@@ -73,8 +74,14 @@ def create_patient():
 			return redirect(url_for('create_patient'))
 
 		cur = mysql.connection.cursor()
+		res = cur.execute("SELECT MAX(`patientSsnId`) as maxId from patients")
+		max = cur.fetchone()
+		maxId = int(max['maxId'])
+		app.logger.info(maxId)
+		cur.close()
+
+		cur = mysql.connection.cursor()
 		result = cur.execute("SELECT * from patients WHERE patientSsnId = %s",[patientSsnId])
-		mysql.connection.commit()
 		cur.close()
 
 		if result == 0 :

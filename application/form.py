@@ -8,7 +8,7 @@ class LoginForm(FlaskForm):
 	submit = SubmitField("Login")
 
 class CreatePatientForm(FlaskForm):
-	patientSSNID = IntegerField("Patient SSN ID",validators = [Length(min=9),DataRequired()])
+	patientSSNID = IntegerField("Patient SSN ID (9 digits)",validators = [Length(min=9),DataRequired()])
 	patientName = StringField("Patient Name",validators = [DataRequired()])
 	patientAge = IntegerField("Patient Age",validators = [DataRequired()])
 	dateOfAdmission = DateField("Date of Admission",validators = [])
