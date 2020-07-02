@@ -56,20 +56,37 @@ def logout():
 @is_logged_in
 def create_patient():
 	form = CreatePatientForm()
+	cur = mysql.connection.cursor()
+	res = cur.execute("SELECT MAX(`patientId`) as maxId, MAX(`patientSsnID`) as maxSsnId from patients")
+	maxi = cur.fetchone()
+	maxId = maxi['maxId']
+	maxSsnId = maxi['maxSsnId']
+	cur.close()
+	if maxId:
+		maxId= int(maxId)+1
+	else:
+		maxId = 100000001
+	if maxSsnId:
+		maxSsnId = int(maxSsnId)+3
+	else:
+		maxSsnId = 101324032
 	if request.method == 'POST':
 		patientSsnId = form.patientSSNID.data
-		patientName = form.patientName.data
+		patientName = form.patientName.data.strip()
 		age = form.patientAge.data
 		dateOfAdmission = form.dateOfAdmission.data
-		address = form.address.data
-		state = form.state.data
-		city = form.city.data
+		address = form.address.data.strip()
+		state = form.state.data.strip()
+		city = form.city.data.strip()
 		typeOfBed = form.typeOfBed.data
 		status = 'Occupied'
 
-		if not patientName.isalpha():
-			flash('Patient creation failed!! Name can only only contain Alphabets!','danger')
-			return redirect(url_for('create_patient'))
+		name_array = patientName.split(' ')
+		for name in name_array:
+			if not name.isalpha():
+				flash('Patient creation failed!! Name can only only contain Alphabets!','danger')
+				return redirect(url_for('create_patient'))
+			
 
 		if str(age).isalpha() or age/999>1:
 			flash('Patient creation failed!! Invalid Age!','danger')
@@ -80,15 +97,6 @@ def create_patient():
 			flash('SSN ID must be of 9 digits','danger')
 			return redirect(url_for('create_patient'))
 
-		cur = mysql.connection.cursor()
-		res = cur.execute("SELECT MAX(`patientId`) as maxId from patients")
-		maxi = cur.fetchone()
-		maxId = (maxi['maxId'])
-		cur.close()
-		if maxId:
-			maxId= int(maxId)+1
-		else:
-			maxId = 100000001
 
 		cur = mysql.connection.cursor()
 		result = cur.execute("SELECT * from patients WHERE patientSsnId = %s",[patientSsnId])
@@ -102,8 +110,10 @@ def create_patient():
 			flash('Patient created successfully!','success')
 			return redirect(url_for('view_patient'))
 		else:
-			flash('Patient with this Id already exists','danger')
+			flash('Patient with this SSN ID already exists','danger')
 			return redirect(url_for('create_patient'))
+
+	form.patientSSNID.data = maxSsnId
 	return render_template('create_patient.html', form = form)
 
 #READ Page
@@ -180,18 +190,20 @@ def create_patient_update():
 	form = CreatePatientForm()
 	if request.method == "POST":
 		if result > 0:
-			patientName = form.patientName.data
+			patientName = form.patientName.data.strip()
 			age = form.patientAge.data
-			address = form.address.data
+			address = form.address.data.strip()
 			dateOfAdmission = form.dateOfAdmission.data
 			typeOfBed = form.typeOfBed.data
-			city = form.city.data
-			state = form.state.data
+			city = form.city.data.strip()
+			state = form.state.data.strip()
 
-			if not patientName.isalpha():
-				flash('Patient Updation failed!! Name can only only contain Alphabets!','danger')
-				return redirect(url_for('create_patient_update',dataupdate = _id))
-
+			name_array = patientName.split(' ')
+			for name in name_array:
+				if not name.isalpha():
+					flash('Patient Updation failed!! Name can only only contain Alphabets!','danger')
+					return redirect(url_for('create_patient_update',dataupdate = _id))
+				
 			if str(age).isalpha() or age/999>1:
 				flash('Patient updation failed!! Invalid Age!','danger')
 				return redirect(url_for('create_patient_update', dataupdate = _id))
@@ -470,13 +482,14 @@ def billing_screen(pId):
 		if len(_array)==1 :
 			difference = 1
 		else :
-			difference = int(_array[0])
+			difference = int(0 if _array[0]<0 else _array[0])
 		if patient['typeOfBed'] == 'Single Room':
 			roomFee = 8000*difference
 		elif patient['typeOfBed'] == 'Semi Sharing':
 			roomFee = 4000*difference
 		else:
 			roomFee = 2000*difference
+
 
 		curr = mysql.connection.cursor()
 		result = curr.execute("select diagnosticsmaster.testName, diagnosticsmaster.testCharge from diagnosticpatient inner join diagnosticsmaster on diagnosticpatient.testId=diagnosticsmaster.testId where patientId=%s",[pId])
