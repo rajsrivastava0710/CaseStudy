@@ -1,0 +1,14 @@
+1.Create your virtual environment
+	->python -m venv env
+
+2.Activate It
+	->env/Scripts/activate
+
+3.Download all the packages from requiremnts.txt
+	->pip install -r requirements.txts
+
+4.Run the SQL Script to create all the tables and some dummy data.
+	->replace your mysql password in __init__.py
+
+5.Start the server
+	->flask run
